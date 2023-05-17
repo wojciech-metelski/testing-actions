@@ -19,4 +19,4 @@ jobs:
         - name: 'Authenticate'
           run: sfdx force:auth:sfdxurl:store -f AUTH_URL_UAT -s -a UAT_ORG
         - name: 'Deploy'
-          run: sfdx force:source:deploy -x manifest/package.xml -c -l NoTestRun -w 9000
+          run: sfdx force:source:deploy -x manifest/package.xml -l NoTestRun -w 9000
