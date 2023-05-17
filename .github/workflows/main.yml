@@ -1,0 +1,22 @@
+name: on-merge-uat
+on:
+  push:
+    branches:
+      - main
+jobs:
+  deploy-to-org:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v2
+          with:
+            ref: main
+            fetch-depth: 0
+        - uses: sfdx-actions/setup-sfdx@v1
+        
+        - name: 'Create file with Auth Url'
+          shell: bash
+          run: 'echo ${{ secrets.AUTH_URL_UAT}} > AUTH_URL_UAT'
+        - name: 'Authenticate'
+          run: sfdx force:auth:sfdxurl:store -f AUTH_URL_UAT -s -a UAT_ORG
+        - name: 'Deploy'
+          run: sfdx force:source:deploy -x manifest/package.xml -c -l NoTestRun -w 9000
